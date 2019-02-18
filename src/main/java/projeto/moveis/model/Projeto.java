@@ -1,5 +1,6 @@
 package projeto.moveis.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,9 +9,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-@Entity
-public class Projeto {
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@Entity
+public class Projeto implements Serializable {
+
+
+	private static final long serialVersionUID = 1L;
+
+
+	public Projeto() {
+		
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
@@ -18,7 +29,17 @@ public class Projeto {
 	public Integer valor;
 	
 	@OneToMany(mappedBy="projeto")
-	public List<Clients> clients;
+	@JsonIgnore
+	public List<Clients> clients;	
+	
+	
+	public List<Clients> getClients() {
+		return clients;
+	}
+
+	public void setClients(List<Clients> clients) {
+		this.clients = clients;
+	}
 
 	public Long getId() {
 		return id;
@@ -43,16 +64,6 @@ public class Projeto {
 	public void setValor(Integer valor) {
 		this.valor = valor;
 	}
-
-	public List<Clients> getClients() {
-		return clients;
-	}
-
-	public void setClients(List<Clients> clients) {
-		this.clients = clients;
-	} 
-	
-	
 	
 	
 }
