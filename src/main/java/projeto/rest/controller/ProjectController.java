@@ -15,48 +15,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import projeto.api.rest.repository.ClientsRepository;
-import projeto.moveis.model.Clients;
+import projeto.api.rest.repository.ProjectRespository;
+import projeto.moveis.model.Projeto;
 
 @RestController
-@RequestMapping(value="/clients")
-public class ClientsController {
+@RequestMapping(value = "/projects")
+public class ProjectController {
 
 	@Autowired
-	private ClientsRepository clientsRepository;
+	private ProjectRespository projectRespository;
 	
-	
-	@GetMapping(value = "/{id}", produces="application/json")
-	public ResponseEntity<Clients> searchClients(@PathVariable ("id") Long id) {
-		Optional<Clients>  clients = clientsRepository.findById(id);
-		
-		return new ResponseEntity<Clients>(clients.get(), HttpStatus.OK);
+	@GetMapping(value="/{id}", produces="application/json")
+	public ResponseEntity<Projeto> searchProject(@PathVariable(value="id") Long id) {
+		Optional<Projeto> project = projectRespository.findById(id);
+		return new ResponseEntity<Projeto>(project.get(), HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/", produces="application/json")
-	public ResponseEntity<List<Clients>> searchAllClients() {
-		List<Clients> clients = (List<Clients>) clientsRepository.findAll();
-		return new ResponseEntity<List<Clients>>(clients, HttpStatus.OK);
+	public ResponseEntity<List<Projeto>> searchProjectId() {
+		List<Projeto> projects = (List<Projeto>) projectRespository.findAll();
+		return new ResponseEntity<List<Projeto>>(projects, HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/", produces="application/json")
-	public ResponseEntity<Clients> register(@RequestBody Clients clients) {
-		Clients clientsSalve = clientsRepository.save(clients);
-		
-		return new ResponseEntity<Clients>(clientsSalve, HttpStatus.OK);
+	public ResponseEntity<Projeto> register(@RequestBody Projeto projeto) {
+		Projeto projectSalve = projectRespository.save(projeto);
+		return new ResponseEntity<Projeto>(projectSalve, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value="/{id}", produces="application/json")
 	public ResponseEntity<Void> deleteClients(@PathVariable("id") Long id) {
-		clientsRepository.deleteById(id);
+		projectRespository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping(value="/", produces="application/json")
-	public ResponseEntity<Clients> change(@RequestBody Clients clients) {
-		Clients clientsSalve = clientsRepository.save(clients);
-		
-		return new ResponseEntity<Clients>(clientsSalve, HttpStatus.OK);
+	public ResponseEntity<Projeto> change(@RequestBody Projeto projeto) {
+		Projeto projectSalve = projectRespository.save(projeto);
+		return new ResponseEntity<Projeto>(projectSalve, HttpStatus.OK);
 	}
 	
 }
